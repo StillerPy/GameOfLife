@@ -2,10 +2,13 @@ package ru.stillercode
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import androidx.gridlayout.widget.GridLayout
+import kotlin.concurrent.thread
 
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -14,8 +17,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
-    lateinit var buttonGrid: MutableList<MutableList<Button>>
-    val life = Life(SIZE, LIFE)
+    private lateinit var buttonGrid: MutableList<MutableList<Button>>
+    private val ruleSwitcher = Switcher(RULES)
+    private val life = Life(SIZE, ruleSwitcher.get())
+    private var isRunning = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -50,14 +55,22 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.invertButton).setOnClickListener {
             invert()
         }
+        findViewById<Button>(R.id.runButton).setOnClickListener {
+            run()
+        }
+        findViewById<Button>(R.id.changeRuleButton).setOnClickListener {
+            switchRule()
+        }
+        //mainHandler = Handler(Looper.getMainLooper())
+
         updateGrid()
+        updateRuleName()
     }
 
     private fun invert() {
         life.invert()
         updateGrid()
     }
-
     private fun clear() {
         life.clear()
         updateGrid()
@@ -66,7 +79,6 @@ class MainActivity : AppCompatActivity() {
         life.step()
         updateGrid()
     }
-
     private fun createGrid(): MutableList<MutableList<Button>> {
         val gridLayout = findViewById<GridLayout>(R.id.grid)
         gridLayout.rowCount = SIZE.y
@@ -99,7 +111,6 @@ class MainActivity : AppCompatActivity() {
         life.click(cell)
         updateGrid()
     }
-
     private fun updateGrid() {
         for (y in 0 until SIZE.y) {
             for (x in 0 until SIZE.x) {
@@ -119,6 +130,25 @@ class MainActivity : AppCompatActivity() {
         life.randFill(50)
         updateGrid()
     }
+    private fun run() {
+        isRunning = !isRunning
+        findViewById<Button>(R.id.runButton).text = if (isRunning) {"Stop"} else {"Run"}
+        thread {
+            while (isRunning) {
+                step()
+                Thread.sleep(300)
+            }
+        }
+    }
+    private fun updateRuleName() {
+        findViewById<TextView>(R.id.upperText).text = life.rule.name
+    }
+    private fun switchRule() {
+        ruleSwitcher.switch()
+        life.rule = ruleSwitcher.get()
+        updateRuleName()
+    }
+
 
 }
 

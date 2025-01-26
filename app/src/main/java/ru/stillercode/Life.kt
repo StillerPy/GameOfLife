@@ -2,7 +2,7 @@ package ru.stillercode
 
 import kotlin.random.Random
 
-class Life(private val size: XY, private var rule: Rule) {
+class Life(private val size: XY, var rule: Rule) {
     private var current = Array(size.y) {BooleanArray(size.x)}
     private val neighborMap = mutableMapOf<XY, List<XY>>()
     init {
@@ -107,6 +107,7 @@ class Life(private val size: XY, private var rule: Rule) {
     }
     fun randFill(percents: Int) {
         val n = ((size.x * size.y) * percents / 100.0).toInt()
+        println(n)
         val emptyCells = getEmpty()
         while (count() < n) {
             val cell = emptyCells[Random.nextInt(emptyCells.size)]

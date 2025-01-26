@@ -12,7 +12,7 @@
         android:id="@+id/upperText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Conway's Game of Life"
+        android:text="Rule Name"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,5 +104,21 @@
         android:text="Invert"
         app:layout_constraintStart_toEndOf="@+id/randomButton"
         app:layout_constraintTop_toBottomOf="@+id/upperText" />
+
+    <Button
+        android:id="@+id/runButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Run"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clearButton" />
+
+    <Button
+        android:id="@+id/changeRuleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rule"
+        app:layout_constraintStart_toEndOf="@+id/runButton"
+        app:layout_constraintTop_toBottomOf="@+id/stepButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

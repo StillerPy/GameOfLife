@@ -1,7 +1,7 @@
 package ru.stillercode
 
 data class Rule(
-    val survival: List<Int>,
-    val birth: List<Int>,
+    val birth: Set<Int>,
+    val survival: Set<Int>,
     val name: String = "Custom rule"
 )
